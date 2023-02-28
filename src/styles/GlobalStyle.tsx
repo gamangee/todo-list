@@ -33,8 +33,21 @@ footer, header, hgroup, main, menu, nav, section {
 *{
     box-sizing: border-box;
 }
+body{
+  background-color: ${(props) => props.theme.bgColor};
+}
 
-menu, ol, ul {
+button{
+  background-color: ${(props) => props.theme.mainColor};
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  color:#ffffff;
+  border-radius: 3px;
+}
+
+menu, ol, ul,li {
   list-style: none;
 }
 blockquote, q {

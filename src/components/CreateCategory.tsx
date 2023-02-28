@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
+import styled from 'styled-components';
 import { customCategoryState } from '../recoil/atoms';
 
 interface IForm {
@@ -21,14 +22,33 @@ export default function CreateCategory() {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleValid)}>
-      <input
+    <CreateCategoryForm onSubmit={handleSubmit(handleValid)}>
+      <CreateCategoryInput
         {...register('customCategory', {
           required: 'Please write a category',
         })}
         placeholder='Write a category'
       />
-      <button>Add</button>
-    </form>
+      <AddBtn>Add</AddBtn>
+    </CreateCategoryForm>
   );
 }
+
+const CreateCategoryForm = styled.form`
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+`;
+
+const CreateCategoryInput = styled.input`
+  width: 100%;
+  margin-right: 10px;
+`;
+
+const AddBtn = styled.button`
+  transition: all 0.3s ease-in;
+
+  &:hover {
+    background-color: #8843dd;
+  }
+`;

@@ -1,9 +1,16 @@
 import React from 'react';
-import { useSetRecoilState } from 'recoil';
-import { Categories, IToDo, toDoState } from '../recoil/atoms';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import styled from 'styled-components';
+import {
+  Categories,
+  customCategoryState,
+  IToDo,
+  toDoState,
+} from '../recoil/atoms';
 
 export default function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
+  const customCategories = useRecoilValue(customCategoryState);
 
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const {
@@ -25,24 +32,61 @@ export default function ToDo({ text, category, id }: IToDo) {
   };
 
   return (
-    <li>
-      <span>{text}</span>
+    <Container>
+      <Text>{text}</Text>
       {category !== Categories.DOING && (
-        <button name={Categories.DOING} onClick={onClick}>
+        <Tag name={Categories.DOING} onClick={onClick}>
           Doing
-        </button>
+        </Tag>
       )}
       {category !== Categories.TO_DO && (
-        <button name={Categories.TO_DO} onClick={onClick}>
+        <Tag name={Categories.TO_DO} onClick={onClick}>
           To Do
-        </button>
+        </Tag>
       )}
       {category !== Categories.DONE && (
-        <button name={Categories.DONE} onClick={onClick}>
+        <Tag name={Categories.DONE} onClick={onClick}>
           Done
-        </button>
+        </Tag>
       )}
-      <button onClick={handleDelete}>delete</button>
-    </li>
+      {customCategories?.map(
+        (customCategory) =>
+          category !== customCategory.text && (
+            <Tag
+              key={customCategory.id}
+              name={customCategory.text}
+              onClick={onClick}
+            >
+              {customCategory.text}
+            </Tag>
+          )
+      )}
+      <DeleteBtn onClick={handleDelete}>delete</DeleteBtn>
+    </Container>
   );
 }
+
+const Container = styled.li`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 10px 0;
+`;
+
+const Text = styled.div`
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
+const Tag = styled.button`
+  margin: 5px;
+  text-transform: uppercase;
+  background-color: ${(props) => props.theme.tagColor};
+  color: #4a2972;
+  font-size: 10px;
+  font-weight: 600;
+`;
+
+const DeleteBtn = styled.button`
+  background-color: #ff5252;
+`;
